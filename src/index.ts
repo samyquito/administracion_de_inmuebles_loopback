@@ -1,4 +1,4 @@
-import {ApplicationConfig, AdministracionDeInmueblesApplication} from './application';
+import {AdministracionDeInmueblesApplication, ApplicationConfig} from './application';
 
 export * from './application';
 
@@ -13,7 +13,7 @@ export async function main(options: ApplicationConfig = {}) {
 
   return app;
 }
-
+//prueba
 if (require.main === module) {
   // Run the application
   const config = {
