@@ -1,5 +1,6 @@
 import {inject, lifeCycleObserver, LifeCycleObserver} from '@loopback/core';
 import {juggler} from '@loopback/repository';
+import * as fs from 'fs';
 
 const config = {
   name: 'mysql',
@@ -8,8 +9,11 @@ const config = {
   host: 'turismodb.mysql.database.azure.com',
   port: 3306,
   user: 'turismo_user',
-  password: 'Admi12345',
-  database: 'turismdb'
+  password: '18082002Juan',
+  database: 'turismdb',
+  ssl: {
+    ca: fs.readFileSync("DigiCertGlobalRootCA.crt.pem")
+  }
 };
 
 // Observe application's life cycle to disconnect the datasource when

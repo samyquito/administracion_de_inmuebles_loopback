@@ -1,6 +1,6 @@
 import {inject} from '@loopback/core';
 import {DefaultCrudRepository} from '@loopback/repository';
-import {MysqlDataSource} from '../datasources';
+import {MysqlDataSource} from '../datasources/mysql.datasource';
 import {ApartmentTowers, ApartmentTowersRelations} from '../models';
 
 export class ApartmentTowersRepository extends DefaultCrudRepository<
