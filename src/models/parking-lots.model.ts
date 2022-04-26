@@ -15,6 +15,10 @@ export class ParkingLots extends Entity {
   })
   area: number;
 
+  @property({
+    type: 'number',
+  })
+  propertiesId?: number;
 
   constructor(data?: Partial<ParkingLots>) {
     super(data);

@@ -1,4 +1,8 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, belongsTo, hasOne} from '@loopback/repository';
+import {ApartmentTowers} from './apartment-towers.model';
+import {UtilityRooms} from './utility-rooms.model';
+import {ParkingLots} from './parking-lots.model';
+import {People} from './people.model';
 
 @model()
 export class Properties extends Entity {
@@ -27,6 +31,27 @@ export class Properties extends Entity {
   })
   coefficient: number;
 
+  @belongsTo(() => ApartmentTowers)
+  apartmentTowersId: number;
+
+  @property({
+    type: 'number',
+  })
+  propertyTypeId?: number;
+
+  @hasOne(() => UtilityRooms)
+  utilityRooms: UtilityRooms;
+
+  @hasOne(() => ParkingLots)
+  parkingLots: ParkingLots;
+
+  @property({
+    type: 'number',
+  })
+  ownerId?: number;
+
+  @belongsTo(() => People)
+  habitantId: number;
 
   constructor(data?: Partial<Properties>) {
     super(data);

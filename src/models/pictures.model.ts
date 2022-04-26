@@ -1,4 +1,5 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {SocialArea} from './social-area.model';
 
 @model()
 export class Pictures extends Entity {
@@ -27,6 +28,8 @@ export class Pictures extends Entity {
   })
   labels: any;
 
+  @belongsTo(() => SocialArea)
+  socialAreaId: number;
 
   constructor(data?: Partial<Pictures>) {
     super(data);

@@ -15,6 +15,10 @@ export class UtilityRooms extends Entity {
   })
   area: number;
 
+  @property({
+    type: 'number',
+  })
+  propertiesId?: number;
 
   constructor(data?: Partial<UtilityRooms>) {
     super(data);

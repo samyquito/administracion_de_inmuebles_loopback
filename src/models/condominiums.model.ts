@@ -51,6 +51,10 @@ export class Condominiums extends Entity {
   })
   currentBudget: number;
 
+  @property({
+    type: 'number',
+  })
+  adminId?: number;
 
   constructor(data?: Partial<Condominiums>) {
     super(data);

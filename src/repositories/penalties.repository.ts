@@ -1,16 +1,22 @@
-import {inject} from '@loopback/core';
-import {DefaultCrudRepository} from '@loopback/repository';
+import {inject, Getter} from '@loopback/core';
+import {DefaultCrudRepository, repository, BelongsToAccessor} from '@loopback/repository';
 import {MysqlDataSource} from '../datasources/mysql.datasource';
-import {Penalties, PenaltiesRelations} from '../models';
+import {Penalties, PenaltiesRelations, Properties} from '../models';
+import {PropertiesRepository} from './properties.repository';
 
 export class PenaltiesRepository extends DefaultCrudRepository<
   Penalties,
   typeof Penalties.prototype.id,
   PenaltiesRelations
 > {
+
+  public readonly properties: BelongsToAccessor<Properties, typeof Penalties.prototype.id>;
+
   constructor(
-    @inject('datasources.mysql') dataSource: MysqlDataSource,
+    @inject('datasources.mysql') dataSource: MysqlDataSource, @repository.getter('PropertiesRepository') protected propertiesRepositoryGetter: Getter<PropertiesRepository>,
   ) {
     super(Penalties, dataSource);
+    this.properties = this.createBelongsToAccessorFor('properties', propertiesRepositoryGetter,);
+    this.registerInclusionResolver('properties', this.properties.inclusionResolver);
   }
 }
