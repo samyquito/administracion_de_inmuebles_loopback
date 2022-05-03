@@ -14,3 +14,4 @@ export * from './payments-bills.controller';
 export * from './bills-properties.controller';
 export * from './people-properties.controller';
 export * from './properties-people.controller';
+export * from './people.controller';

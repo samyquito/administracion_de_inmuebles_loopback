@@ -36,10 +36,10 @@ export class People extends Entity {
   secondSurname: string;
 
   @property({
-    type: 'number',
+    type: 'string',
     required: true,
   })
-  dni: number;
+  dni: string;
 
   @property({
     type: 'string',
