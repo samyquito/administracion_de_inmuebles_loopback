@@ -21,13 +21,11 @@ export class Properties extends Entity {
 
   @property({
     type: 'number',
-    required: true,
   })
   administrationCost: number;
 
   @property({
     type: 'number',
-    required: true,
   })
   coefficient: number;
 
