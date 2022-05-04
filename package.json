@@ -57,6 +57,7 @@
     "@loopback/rest-explorer": "^4.1.0",
     "@loopback/service-proxy": "^4.1.0",
     "loopback-connector-mysql": "^6.1.0",
+    "node-fetch": "^3.2.4",
     "parse-bearer-token": "^1.0.1",
     "tslib": "^2.0.0"
   },

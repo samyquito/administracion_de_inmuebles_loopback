@@ -4,6 +4,7 @@ import {HttpErrors, Request} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
 import parseBearerToken from 'parse-bearer-token';
 import {GeneralData} from '../config/general_date';
+import fetch from 'node-fetch';
 
 /*
  * Fix the service type. Possible options can be:
@@ -21,32 +22,33 @@ export class AdminStrategy implements AuthenticationStrategy {
     let token = parseBearerToken(request);
     if (token) {
       let rol_admin = GeneralData.administratorRole;
-    let url_token =''; //`${Keys.url_validar_token}?${Keys.arg_token}=${token}&${Keys.arg_rol_token}=${Keys.rol_administrador}`//
-     /* let r = "";
-      await fetch(url_token)
-        .then(async (res: any) => {
+      let url_token=GeneralData.url_validator_token;
+     let r = "";
+     let b=`{
+      "token": ${token},
+      "roleId": ${rol_admin},
+    }`;
+      await fetch(url_token,
+        {
+          method: 'POST',
+          body:b,
+        }
+      ).then(async (res: any) => {
           r = await res.text()
           console.log(r)
         })
       console.log("R: " + r)
-      switch (r) {
-        case "OK":
+      if(r){
           let perfil: UserProfile = Object.assign({
             admin: "OK"
           });
           return perfil;
-          break;
-        case "KO":
+        }else{
           throw new HttpErrors[401]("El rol del token no es válido");
-          break;
-        case "":
-          throw new HttpErrors[401]("El token no es válido");
-          break;
-      }*/
+        }
     } else {
       throw new HttpErrors[401]("La request no tiene un token");
     }
     return undefined
   }
-
 }
