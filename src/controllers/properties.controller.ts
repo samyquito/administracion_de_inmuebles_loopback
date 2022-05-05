@@ -4,27 +4,25 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Properties} from '../models';
-import {PropertiesRepository} from '../repositories';
+import {ApartmentTowersRepository, CondominiumsRepository, PropertiesRepository} from '../repositories';
 
 export class PropertiesController {
   constructor(
     @repository(PropertiesRepository)
-    public propertiesRepository : PropertiesRepository,
-  ) {}
+    public propertiesRepository: PropertiesRepository,
+    @repository(ApartmentTowersRepository)
+    public apartamentTowersRepository: ApartmentTowersRepository,
+    @repository(CondominiumsRepository)
+    public condominiumsRepository: CondominiumsRepository
+  ) { }
 
   @post('/properties')
   @response(200, {
@@ -37,13 +35,27 @@ export class PropertiesController {
         'application/json': {
           schema: getModelSchemaRef(Properties, {
             title: 'NewProperties',
-            exclude: ['id'],
+            exclude: ['id', 'coefficient','administrationCost'],
           }),
         },
       },
     })
     properties: Omit<Properties, 'id'>,
   ): Promise<Properties> {
+    const area = properties.area;
+    const apartmentTowersId = properties.apartmentTowersId;
+    // const {area, apartmentTowersId} = properties;
+
+    const tower = await this.apartamentTowersRepository.findById(apartmentTowersId);
+    const condominiums = await this.condominiumsRepository.findById(tower.condominiumsId);
+
+    const condominiumArea = condominiums.area;
+
+    const coefficient = 230;
+
+    properties.coefficient = coefficient;
+    properties.administrationCost=340.3;
+
     return this.propertiesRepository.create(properties);
   }
 

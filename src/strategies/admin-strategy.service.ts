@@ -1,10 +1,11 @@
 import {AuthenticationStrategy} from '@loopback/authentication';
-import {injectable, /* inject, */ BindingScope, Provider} from '@loopback/core';
+import { /* inject, */ BindingScope, injectable} from '@loopback/core';
 import {HttpErrors, Request} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
 import parseBearerToken from 'parse-bearer-token';
 import {GeneralData} from '../config/general_date';
-import fetch from 'node-fetch';
+
+const fetch = require('node-fetch');
 
 /*
  * Fix the service type. Possible options can be:
@@ -16,36 +17,36 @@ import fetch from 'node-fetch';
 @injectable({scope: BindingScope.TRANSIENT})
 export class AdminStrategy implements AuthenticationStrategy {
   name: string = 'admin';
-  constructor(/* Add @inject to inject parameters */) {}
+  constructor(/* Add @inject to inject parameters */) { }
 
   async authenticate(request: Request): Promise<UserProfile | undefined> {
     let token = parseBearerToken(request);
     if (token) {
       let rol_admin = GeneralData.administratorRole;
-      let url_token=GeneralData.url_validator_token;
-     let r = "";
-     let b=`{
+      let url_token = GeneralData.url_validator_token;
+      let r = "";
+      let b = `{
       "token": ${token},
       "roleId": ${rol_admin},
     }`;
       await fetch(url_token,
         {
           method: 'POST',
-          body:b,
+          body: b,
         }
       ).then(async (res: any) => {
-          r = await res.text()
-          console.log(r)
-        })
+        r = await res.text()
+        console.log(r)
+      })
       console.log("R: " + r)
-      if(r){
-          let perfil: UserProfile = Object.assign({
-            admin: "OK"
-          });
-          return perfil;
-        }else{
-          throw new HttpErrors[401]("El rol del token no es válido");
-        }
+      if (r) {
+        let perfil: UserProfile = Object.assign({
+          admin: "OK"
+        });
+        return perfil;
+      } else {
+        throw new HttpErrors[401]("El rol del token no es válido");
+      }
     } else {
       throw new HttpErrors[401]("La request no tiene un token");
     }

@@ -43,6 +43,12 @@ export class Condominiums extends Entity {
     type: 'number',
     required: true,
   })
+  area: number;
+
+  @property({
+    type: 'number',
+    required: true,
+  })
   initialBillNumber: number;
 
   @property({
