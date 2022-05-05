@@ -1,6 +1,6 @@
-import {AdministracionDeInmueblesApplication, ApplicationConfig} from '../application';
+import {AdministracionDeInmueblesApplication, ApplicationConfig} from './application';
 
-export * from '../application';
+export * from './application';
 
 export async function main(options: ApplicationConfig = {}) {
   const app = new AdministracionDeInmueblesApplication(options);
@@ -37,4 +37,4 @@ if (require.main === module) {
     process.exit(1);
   });
 }
-export * from './notification.service';
+

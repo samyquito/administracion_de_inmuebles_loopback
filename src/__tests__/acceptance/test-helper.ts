@@ -2,7 +2,7 @@ import {
   Client, createRestAppClient,
   givenHttpServerConfig
 } from '@loopback/testlab';
-import {AdministracionDeInmueblesApplication} from '../../services';
+import {AdministracionDeInmueblesApplication} from '../..';
 
 export async function setupApplication(): Promise<AppWithClient> {
   const restConfig = givenHttpServerConfig({

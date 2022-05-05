@@ -1,5 +1,5 @@
 import {Client, expect} from '@loopback/testlab';
-import {AdministracionDeInmueblesApplication} from '../../services';
+import {AdministracionDeInmueblesApplication} from '../..';
 import {setupApplication} from './test-helper';
 
 describe('PingController', () => {
