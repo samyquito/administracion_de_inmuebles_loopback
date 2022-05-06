@@ -1,3 +1,4 @@
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -11,17 +12,18 @@ import {
   getModelSchemaRef, param, patch, post, put, requestBody,
   response
 } from '@loopback/rest';
+import {serialize} from 'v8';
 import {Properties} from '../models';
 import {ApartmentTowersRepository, CondominiumsRepository, PropertiesRepository} from '../repositories';
+import {PropertyCalcultionsService} from '../services';
 
 export class PropertiesController {
   constructor(
     @repository(PropertiesRepository)
     public propertiesRepository: PropertiesRepository,
-    @repository(ApartmentTowersRepository)
-    public apartamentTowersRepository: ApartmentTowersRepository,
-    @repository(CondominiumsRepository)
-    public condominiumsRepository: CondominiumsRepository
+    @service(PropertyCalcultionsService)
+    public propertyService: PropertyCalcultionsService,
+
   ) { }
 
   @post('/properties')
@@ -40,21 +42,13 @@ export class PropertiesController {
         },
       },
     })
-    properties: Omit<Properties, 'id'>,
+    properties:  Omit<Properties, 'id'>,
   ): Promise<Properties> {
-    const area = properties.area;
-    const apartmentTowersId = properties.apartmentTowersId;
+    
     // const {area, apartmentTowersId} = properties;
-
-    const tower = await this.apartamentTowersRepository.findById(apartmentTowersId);
-    const condominiums = await this.condominiumsRepository.findById(tower.condominiumsId);
-
-    const condominiumArea = condominiums.area;
-
-    const coefficient = 230;
-
-    properties.coefficient = coefficient;
-    properties.administrationCost=340.3;
+    const coefficient=await this.propertyService.GenerateCoefficient(properties.apartmentTowersId,properties.area)
+    properties.coefficient =coefficient;
+    properties.administrationCost=await this.propertyService.GenerateAdministrationCost(coefficient,properties.apartmentTowersId);
 
     return this.propertiesRepository.create(properties);
   }
