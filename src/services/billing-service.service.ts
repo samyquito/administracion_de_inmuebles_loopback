@@ -1,7 +1,7 @@
 import {injectable, /* inject, */ BindingScope} from '@loopback/core';
 import {repository} from '@loopback/repository';
 import {PaymentsController} from '../controllers/payments.controller';
-import {CreditNotesRepository, DebitNotesRepository, ExtraFessRepository, PaymentsRepository, PenaltiesRepository} from '../repositories';
+import {CreditNotesRepository, DebitNotesRepository, PaymentsRepository, PenaltiesRepository, PropertiesRepository} from '../repositories';
 
 @injectable({scope: BindingScope.TRANSIENT})
 export class BillingServiceService {
@@ -14,11 +14,13 @@ export class BillingServiceService {
     public debitNotesRepository: DebitNotesRepository,
     @repository(PaymentsController)
     public paymentsRepository: PaymentsRepository,
-    @repository(ExtraFessRepository)
-    public extraFeesRepository: ExtraFessRepository
+    @repository(PropertiesRepository)
+    public propertysRepository: PropertiesRepository
   ) {}
+ async crearFactura(id_property:number): Promise<number>{
+    const administrationCost=(await this.propertysRepository.findById(id_property)).administrationCost;
 
-  /*
-   * Add service methods here
-   */
+
+ return administrationCost +450000
+ }
 }

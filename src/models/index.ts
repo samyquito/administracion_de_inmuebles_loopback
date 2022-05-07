@@ -12,4 +12,3 @@ export * from './people.model';
 export * from './condominiums.model';
 export * from './social-area.model';
 export * from './pictures.model';
-export * from './extra-fess.model';
