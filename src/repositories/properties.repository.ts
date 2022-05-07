@@ -1,11 +1,12 @@
 import {inject, Getter} from '@loopback/core';
 import {DefaultCrudRepository, repository, BelongsToAccessor, HasOneRepositoryFactory, HasManyRepositoryFactory} from '@loopback/repository';
 import {MysqlDataSource} from '../datasources/mysql.datasource';
-import {Properties, PropertiesRelations, ApartmentTowers, UtilityRooms, ParkingLots, People} from '../models';
+import {Properties, PropertiesRelations, ApartmentTowers, UtilityRooms, ParkingLots, People, ExtraFees} from '../models';
 import {ApartmentTowersRepository} from './apartment-towers.repository';
 import {UtilityRoomsRepository} from './utility-rooms.repository';
 import {ParkingLotsRepository} from './parking-lots.repository';
 import {PeopleRepository} from './people.repository';
+import {ExtraFeesRepository} from './extra-fees.repository';
 
 export class PropertiesRepository extends DefaultCrudRepository<
   Properties,
@@ -21,10 +22,14 @@ export class PropertiesRepository extends DefaultCrudRepository<
 
   public readonly habitant: BelongsToAccessor<People, typeof Properties.prototype.id>;
 
+  public readonly extraFees: HasManyRepositoryFactory<ExtraFees, typeof Properties.prototype.id>;
+
   constructor(
-    @inject('datasources.mysql') dataSource: MysqlDataSource, @repository.getter('ApartmentTowersRepository') protected apartmentTowersRepositoryGetter: Getter<ApartmentTowersRepository>, @repository.getter('UtilityRoomsRepository') protected utilityRoomsRepositoryGetter: Getter<UtilityRoomsRepository>, @repository.getter('ParkingLotsRepository') protected parkingLotsRepositoryGetter: Getter<ParkingLotsRepository>, @repository.getter('PeopleRepository') protected peopleRepositoryGetter: Getter<PeopleRepository>,
+    @inject('datasources.mysql') dataSource: MysqlDataSource, @repository.getter('ApartmentTowersRepository') protected apartmentTowersRepositoryGetter: Getter<ApartmentTowersRepository>, @repository.getter('UtilityRoomsRepository') protected utilityRoomsRepositoryGetter: Getter<UtilityRoomsRepository>, @repository.getter('ParkingLotsRepository') protected parkingLotsRepositoryGetter: Getter<ParkingLotsRepository>, @repository.getter('PeopleRepository') protected peopleRepositoryGetter: Getter<PeopleRepository>, @repository.getter('ExtraFeesRepository') protected extraFeesRepositoryGetter: Getter<ExtraFeesRepository>,
   ) {
     super(Properties, dataSource);
+    this.extraFees = this.createHasManyRepositoryFactoryFor('extraFees', extraFeesRepositoryGetter,);
+    this.registerInclusionResolver('extraFees', this.extraFees.inclusionResolver);
     this.habitant = this.createBelongsToAccessorFor('habitant', peopleRepositoryGetter,);
     this.registerInclusionResolver('habitant', this.habitant.inclusionResolver);
     this.parkingLots = this.createHasOneRepositoryFactoryFor('parkingLots', parkingLotsRepositoryGetter);

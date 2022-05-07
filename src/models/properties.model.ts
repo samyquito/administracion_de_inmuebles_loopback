@@ -3,6 +3,7 @@ import {ApartmentTowers} from './apartment-towers.model';
 import {UtilityRooms} from './utility-rooms.model';
 import {ParkingLots} from './parking-lots.model';
 import {People} from './people.model';
+import {ExtraFees} from './extra-fees.model';
 
 @model()
 export class Properties extends Entity {
@@ -65,6 +66,9 @@ export class Properties extends Entity {
 
   @belongsTo(() => People)
   habitantId: number;
+
+  @hasMany(() => ExtraFees)
+  extraFees: ExtraFees[];
 
   constructor(data?: Partial<Properties>) {
     super(data);

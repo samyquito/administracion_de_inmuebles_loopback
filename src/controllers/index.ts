@@ -16,3 +16,5 @@ export * from './people-properties.controller';
 export * from './properties-people.controller';
 export * from './people.controller';
 
+export * from './extra-fees.controller';
+export * from './properties-extra-fees.controller';
