@@ -12,3 +12,4 @@ export * from './properties.repository';
 export * from './property-type.repository';
 export * from './social-area.repository';
 export * from './utility-rooms.repository';
+export * from './extra-fess.repository';

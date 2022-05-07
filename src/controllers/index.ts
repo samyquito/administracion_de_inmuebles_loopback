@@ -15,3 +15,6 @@ export * from './bills-properties.controller';
 export * from './people-properties.controller';
 export * from './properties-people.controller';
 export * from './people.controller';
+export * from './properties-extra-fess.controller';
+export * from './extra-fess-properties.controller';
+export * from './extra-fess.controller';

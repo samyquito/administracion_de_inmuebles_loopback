@@ -37,13 +37,14 @@ export class BillsController {
         'application/json': {
           schema: getModelSchemaRef(Bills, {
             title: 'NewBills',
-            exclude: ['id'],
+            exclude: ['id','paymentDeadline','total'],
           }),
         },
       },
     })
     bills: Omit<Bills, 'id'>,
   ): Promise<Bills> {
+    
     return this.billsRepository.create(bills);
   }
 
