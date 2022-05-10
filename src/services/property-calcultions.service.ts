@@ -41,6 +41,7 @@ export class PropertyCalcultionsService {
     return administrationCost *1000
   }
   async updateArea(id_property:any, area:number){
+
     const propertyArea= (await this.propertyRepository.findById(id_property)).area+ area
   this.propertyRepository.updateById(id_property,{
     area:propertyArea

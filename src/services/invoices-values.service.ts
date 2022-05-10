@@ -25,24 +25,29 @@ export class InvoicesValuesService {
   async crearFactura(id_property:number): Promise<number>{
     const administrationCost=(await this.propertysRepository.findById(id_property)).administrationCost;
     let total=administrationCost;
-    const penalties= (await this.penaltiesRepository.findOne({where:{propertiesId: id_property}}))?.value
-    const creditNotes= (await this.creditNotesRepository.findOne({where:{propertiesId: id_property}}))?.value
-    const debitNotes= (await this.debitNotesRepository.findOne({where:{propertiesId: id_property}}))?.value
-    const extraFeeds= (await this.debitNotesRepository.findOne({where:{propertiesId: id_property}}))?.value
+    const penalties= (await this.penaltiesRepository.findOne({where:{propertiesId: id_property}}));
+    const creditNotes= (await this.creditNotesRepository.findOne({where:{propertiesId: id_property}}));
+    const debitNotes= (await this.debitNotesRepository.findOne({where:{propertiesId: id_property}}));
+    const extraFeeds= (await this.debitNotesRepository.findOne({where:{propertiesId: id_property}}));
 
     if(penalties){
-      total+=penalties;
+      total+=penalties.value;
+      //Eliminar los registros
+      this.penaltiesRepository.deleteById(penalties.id)
     }
     if(creditNotes){
-      total-=creditNotes;
+      total-=creditNotes.value;
+       this.creditNotesRepository.deleteById(creditNotes.id)
     }
     if(debitNotes){
-      total+=debitNotes
+      total+=debitNotes.value;
+       this.debitNotesRepository.deleteById(debitNotes.id)
     }
     if(extraFeeds){
-      total+=extraFeeds
+      total+=extraFeeds.value;
+       this.extraFeesRepository.deleteById(extraFeeds.id)
     }
 
- return total
+ return total;
  }
 }

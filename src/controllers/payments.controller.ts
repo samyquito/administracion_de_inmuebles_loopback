@@ -18,12 +18,14 @@ import {
   response,
 } from '@loopback/rest';
 import {Payments} from '../models';
-import {PaymentsRepository} from '../repositories';
+import {BillsRepository, PaymentsRepository, PropertiesRepository} from '../repositories';
 
 export class PaymentsController {
   constructor(
     @repository(PaymentsRepository)
     public paymentsRepository : PaymentsRepository,
+    @repository(BillsRepository)
+    public billsRepository: BillsRepository
   ) {}
 
   @post('/payments')
@@ -44,6 +46,14 @@ export class PaymentsController {
     })
     payments: Omit<Payments, 'id'>,
   ): Promise<Payments> {
+    let total=(await this.billsRepository.findById(payments.billsId)).total
+    total-=payments.paymentValue;
+    await this.billsRepository.updateById(payments.billsId,{
+      total:total
+    })
+    if(total<0){
+      //crear cuota crédito
+    }
     return this.paymentsRepository.create(payments);
   }
 
