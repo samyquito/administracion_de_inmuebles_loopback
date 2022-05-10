@@ -1,30 +1,29 @@
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Bills} from '../models';
 import {BillsRepository} from '../repositories';
+import {InvoicesValuesService} from '../services';
 
 export class BillsController {
   constructor(
     @repository(BillsRepository)
-    public billsRepository : BillsRepository,
-  ) {}
+    public billsRepository: BillsRepository,
+    @service(InvoicesValuesService)
+    public invoiceValueService: InvoicesValuesService
+
+  ) { }
 
   @post('/bills')
   @response(200, {
@@ -37,14 +36,15 @@ export class BillsController {
         'application/json': {
           schema: getModelSchemaRef(Bills, {
             title: 'NewBills',
-            exclude: ['id','paymentDeadline','total'],
+            exclude: ['id', 'total'],
           }),
         },
       },
     })
     bills: Omit<Bills, 'id'>,
   ): Promise<Bills> {
-    
+    const id_property = bills.propertiesId;
+    bills.total = await this.invoiceValueService.crearFactura(id_property);
     return this.billsRepository.create(bills);
   }
 

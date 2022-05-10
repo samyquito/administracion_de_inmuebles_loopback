@@ -1,6 +1,5 @@
 import {injectable, /* inject, */ BindingScope} from '@loopback/core';
-import {property, repository} from '@loopback/repository';
-import {Condominiums} from '../models';
+import { repository} from '@loopback/repository';
 import {ApartmentTowersRepository, CondominiumsRepository, ParkingLotsRepository, PropertiesRepository, UtilityRoomsRepository} from '../repositories';
 
 @injectable({scope: BindingScope.TRANSIENT})
@@ -39,6 +38,13 @@ export class PropertyCalcultionsService {
     const tower = await this.apartamentTowersRepository.findById(idTower);
     const condominiums = await this.condominiumsRepository.findById(tower.condominiumsId);
     const administrationCost=(condominiums.area*coeficiente)/100
-    return administrationCost
+    return administrationCost *1000
+  }
+  async updateArea(id_property:any, area:number){
+    const propertyArea= (await this.propertyRepository.findById(id_property)).area+ area
+  this.propertyRepository.updateById(id_property,{
+    area:propertyArea
+  })
+
   }
 }

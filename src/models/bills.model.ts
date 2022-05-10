@@ -18,7 +18,6 @@ export class Bills extends Entity {
 
   @property({
     type: 'number',
-    required: true,
     mysql: {
       dataType:'float',
       precision: 10,

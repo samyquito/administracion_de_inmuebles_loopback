@@ -14,7 +14,7 @@ import {
 } from '@loopback/rest';
 import {serialize} from 'v8';
 import {Properties} from '../models';
-import {ApartmentTowersRepository, CondominiumsRepository, PropertiesRepository} from '../repositories';
+import {PropertiesRepository} from '../repositories';
 import {PropertyCalcultionsService} from '../services';
 
 export class PropertiesController {
@@ -44,7 +44,7 @@ export class PropertiesController {
     })
     properties:  Omit<Properties, 'id'>,
   ): Promise<Properties> {
-    
+
     // const {area, apartmentTowersId} = properties;
     const coefficient=await this.propertyService.GenerateCoefficient(properties.apartmentTowersId,properties.area)
     properties.coefficient =coefficient;

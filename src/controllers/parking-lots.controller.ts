@@ -1,3 +1,4 @@
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -19,11 +20,14 @@ import {
 } from '@loopback/rest';
 import {ParkingLots} from '../models';
 import {ParkingLotsRepository} from '../repositories';
+import {PropertyCalcultionsService} from '../services';
 
 export class ParkingLotsController {
   constructor(
     @repository(ParkingLotsRepository)
     public parkingLotsRepository : ParkingLotsRepository,
+    @service(PropertyCalcultionsService)
+    public propertyCalculation : PropertyCalcultionsService
   ) {}
 
   @post('/parking-lots')
@@ -44,6 +48,7 @@ export class ParkingLotsController {
     })
     parkingLots: Omit<ParkingLots, 'id'>,
   ): Promise<ParkingLots> {
+   await this.propertyCalculation.updateArea(parkingLots.propertiesId, parkingLots.area)
     return this.parkingLotsRepository.create(parkingLots);
   }
 
