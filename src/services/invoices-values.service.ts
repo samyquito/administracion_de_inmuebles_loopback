@@ -1,7 +1,7 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
-import {repository} from '@loopback/repository';
+import {CountSchema, repository} from '@loopback/repository';
 import {resourceUsage} from 'process';
-import {CreditNotesRepository, DebitNotesRepository, ExtraFeesRepository, PenaltiesRepository, PropertiesRepository} from '../repositories';
+import {BillsRepository, CreditNotesRepository, DebitNotesRepository, ExtraFeesRepository, PenaltiesRepository, PropertiesRepository} from '../repositories';
 
 @injectable({scope: BindingScope.TRANSIENT})
 export class InvoicesValuesService {
@@ -15,14 +15,16 @@ export class InvoicesValuesService {
     @repository(PropertiesRepository)
     public propertysRepository: PropertiesRepository,
     @repository(ExtraFeesRepository)
-    public extraFeesRepository: ExtraFeesRepository
+    public extraFeesRepository: ExtraFeesRepository,
+    @repository(BillsRepository)
+    public billsRepository: BillsRepository
   ) {}
 
   /*
    * Add service methods here
    */
 
-  async crearFactura(id_property:number): Promise<number>{
+  async crearFactura(id_property:any): Promise<number>{
     const administrationCost=(await this.propertysRepository.findById(id_property)).administrationCost;
     let total=administrationCost;
     const penalties= (await this.penaltiesRepository.findOne({where:{propertiesId: id_property}}));
@@ -50,4 +52,16 @@ export class InvoicesValuesService {
 
  return total;
  }
+  async createAllBills(paymentDeadLine:any, message:any){
+    const propertys= await this.propertysRepository.find()
+    propertys.forEach( async (property) =>{
+     this.billsRepository.create({
+      "paymentDeadline": paymentDeadLine,
+      "message":message,
+      "propertiesId": property.id,
+      "total": await this.crearFactura(property.id)
+     })
+
+    })
+  }
 }
