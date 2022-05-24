@@ -18,3 +18,4 @@ export * from './people.controller';
 
 export * from './extra-fees.controller';
 export * from './properties-extra-fees.controller';
+export * from './file-upload.controller';
