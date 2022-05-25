@@ -1,4 +1,4 @@
-import {inject} from '@loopback/core';
+/*import {inject} from '@loopback/core';
 import {
   HttpErrors, post,
   Request,
@@ -100,4 +100,4 @@ export class FileUploadController {
   }
 
 }
-
+*/
