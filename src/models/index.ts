@@ -13,3 +13,4 @@ export * from './condominiums.model';
 export * from './social-area.model';
 export * from './pictures.model';
 export * from './extra-fees.model';
+export * from './all-bills.model';

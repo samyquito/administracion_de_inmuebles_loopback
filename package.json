@@ -59,14 +59,21 @@
     "@loopback/service-proxy": "^4.1.2",
     "@types/node-fetch": "^2.6.1",
     "loopback-connector-mysql": "^6.1.0",
+<<<<<<< HEAD
     "node-fetch": "^2.6.1",
+=======
+    "multer": "^1.4.4",
+    "node-fetch": "^2.6.6",
+>>>>>>> 234b3ac3f8db8f2c11eb399b5030a67ed8b57829
     "parse-bearer-token": "^1.0.1",
+    "path": "^0.12.7",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
     "@loopback/build": "^8.1.2",
     "@loopback/eslint-config": "^12.0.4",
     "@loopback/testlab": "^4.1.2",
+    "@types/multer": "^1.4.7",
     "@types/node": "^12.20.47",
     "eslint": "^8.10.0",
     "source-map-support": "^0.5.21",

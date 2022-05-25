@@ -46,6 +46,7 @@ export class PaymentsController {
     })
     payments: Omit<Payments, 'id'>,
   ): Promise<Payments> {
+    //pasar esto a un servicio
     let total=(await this.billsRepository.findById(payments.billsId)).total
     total-=payments.paymentValue;
     await this.billsRepository.updateById(payments.billsId,{

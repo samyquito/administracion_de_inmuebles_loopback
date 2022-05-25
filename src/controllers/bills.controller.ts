@@ -12,7 +12,7 @@ import {
   getModelSchemaRef, param, patch, post, put, requestBody,
   response
 } from '@loopback/rest';
-import {Bills} from '../models';
+import {AllBills, Bills} from '../models';
 import {BillsRepository, PeopleRepository, PropertiesRepository} from '../repositories';
 import {InvoicesValuesService, NotificationService} from '../services';
 
@@ -57,6 +57,27 @@ export class BillsController {
     this.notificationService.sendSmsMessage(message, destination);
     return this.billsRepository.create(bills);
   }
+  @post('/allBills')
+  @response(200, {
+    description: 'AllBills model instance',
+    content: {'application/json': {schema: getModelSchemaRef(AllBills)}},
+  })
+  async createAll(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(AllBills, {
+            title: 'AllBills',
+          }),
+        },
+      },
+    })
+    bills: AllBills
+  ): Promise<boolean> {
+    this.invoiceValueService.createAllBills(bills.paymentDeadLine, bills.message)
+    return true
+  }
+  //Crear un post para crear todas las facturas a la vez
 
   @get('/bills/count')
   @response(200, {
