@@ -1,16 +1,14 @@
-/*import {inject} from '@loopback/core';
+import {inject} from '@loopback/core';
 import {
   HttpErrors, post,
   Request,
-  requestBody,
-  response,
-  Response,
+  requestBody, Response,
   RestBindings
 } from '@loopback/rest';
-import {resolve} from 'dns';
-import multer from 'multer';
-import path from 'path';
 import {GeneralData} from '../config/general_date';
+//import multer from 'multer';
+const multer = require("multer");
+const path = require("path")
 
 export class FileUploadController {
 
@@ -56,10 +54,10 @@ export class FileUploadController {
   private GetMulterStorageConfig(path: string) {
     var filename: string = '';
     const storage = multer.diskStorage({
-      destination: function (req, file, cb) {
+      destination: function (req: any, file: any, cb: any) {
         cb(null, path);
       },
-      filename: function (req, file, cb) {
+      filename: function (req: any, file: any, cb: any) {
         filename = `${Date.now()}-${file.originalname}`;
         cb(null, filename);
       },
@@ -70,7 +68,7 @@ export class FileUploadController {
   private StoreFileToPath(
     storePath: string,
     fieldname: string,
-    request, Request,
+    request: Request,
     response: Response,
     acceptedExt: string[],
   ): Promise<object> {
@@ -79,25 +77,25 @@ export class FileUploadController {
 
       const upload = multer({
         storage: storage,
-        fileFilter: function (req, file, callback) {
-          var ext = path.extname(file.originalname).toUpperCase
+        fileFilter: function (req: any, file: any, callback: any) {
+          var ext = path.extname(file.originalname).toUpperCase()
           if (acceptedExt.includes(ext)) {
             return callback(null, true);
           }
           return callback(
-            new HttpErrors[400]('Format file not supported');
+            new HttpErrors[400]('Format file not supported')
           );
-    },
-      limits: {},
+        },
+        limits: {},
       }).single(fieldname);
-  upload(request, response, (err: any) => {
-    if (err) {
-      reject(err);
-    }
-    resolve(response);
-  });
+      upload(request, response, (err: any) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(response);
+      });
     });
   }
 
 }
-*/
+
