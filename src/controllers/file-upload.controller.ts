@@ -6,7 +6,6 @@ import {
   RestBindings
 } from '@loopback/rest';
 import {GeneralData} from '../config/general-data';
-//import multer from 'multer';
 const multer = require("multer");
 const path = require("path")
 
