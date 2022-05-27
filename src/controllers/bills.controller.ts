@@ -12,17 +12,22 @@ import {
   getModelSchemaRef, param, patch, post, put, requestBody,
   response
 } from '@loopback/rest';
-import {Bills} from '../models';
-import {BillsRepository} from '../repositories';
-import {InvoicesValuesService} from '../services';
+import {AllBills, Bills} from '../models';
+import {BillsRepository, PeopleRepository, PropertiesRepository} from '../repositories';
+import {InvoicesValuesService, NotificationService} from '../services';
 
 export class BillsController {
   constructor(
     @repository(BillsRepository)
     public billsRepository: BillsRepository,
     @service(InvoicesValuesService)
-    public invoiceValueService: InvoicesValuesService
-
+    public invoiceValueService: InvoicesValuesService,
+    @repository(PeopleRepository)
+    public peopleRepository: PeopleRepository,
+    @repository(PropertiesRepository)
+    public propertiesRepository: PropertiesRepository,
+    @service(NotificationService)
+    public notificationService: NotificationService
   ) { }
 
   @post('/bills')
@@ -45,8 +50,34 @@ export class BillsController {
   ): Promise<Bills> {
     const id_property = bills.propertiesId;
     bills.total = await this.invoiceValueService.crearFactura(id_property);
+    let property = await this.propertiesRepository.findById(id_property);
+    let person = await this.peopleRepository.findById(property.habitantId);
+    let message = `Hola ${person.firstName}, su factura ha sido generada`;
+    let destination = person.phoneNumber;
+    this.notificationService.sendSmsMessage(message, destination);
     return this.billsRepository.create(bills);
   }
+  @post('/allBills')
+  @response(200, {
+    description: 'AllBills model instance',
+    content: {'application/json': {schema: getModelSchemaRef(AllBills)}},
+  })
+  async createAll(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(AllBills, {
+            title: 'AllBills',
+          }),
+        },
+      },
+    })
+    bills: AllBills
+  ): Promise<boolean> {
+    this.invoiceValueService.createAllBills(bills.paymentDeadLine, bills.message)
+    return true
+  }
+  //Crear un post para crear todas las facturas a la vez
 
   @get('/bills/count')
   @response(200, {

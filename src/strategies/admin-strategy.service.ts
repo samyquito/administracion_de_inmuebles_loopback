@@ -3,7 +3,7 @@ import { /* inject, */ BindingScope, injectable} from '@loopback/core';
 import {HttpErrors, Request} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
 import parseBearerToken from 'parse-bearer-token';
-import {GeneralData} from '../config/general_date';
+import {GeneralData} from '../config/general-data';
 
 const fetch = require('node-fetch');
 
