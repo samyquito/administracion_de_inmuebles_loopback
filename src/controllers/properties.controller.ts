@@ -76,7 +76,7 @@ export class PropertiesController {
   ): Promise<boolean> {
     let property = await this.propertiesRepository.findById(propertyMessage.idProperty);
     let person = await this.peopleRepository.findById(property.habitantId);
-    let message = `Hola ${person.firstName}, ${person.middleName} ${propertyMessage.message}`;
+    let message = `Hola ${person.firstName}  ${person.middleName} ${propertyMessage.message}`;
     let destination = person.phoneNumber;
     this.notificationService.sendSmsMessage(message, destination);
     return true
@@ -103,7 +103,7 @@ export class PropertiesController {
     const propertyes= await this.propertiesRepository.find()
     propertyes.forEach( async (value) => {
       let person = await this.peopleRepository.findById(value.habitantId);
-      let message = `Hola ${person.firstName}, ${person.middleName} ${allPropertyMessage.Message}`;
+      let message = `Hola ${person.firstName} ${person.middleName} ${allPropertyMessage.Message}`;
       let destination = person.phoneNumber;
       this.notificationService.sendSmsMessage(message, destination);
     });
