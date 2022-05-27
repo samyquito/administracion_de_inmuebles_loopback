@@ -13,16 +13,21 @@ import {
   response
 } from '@loopback/rest';
 import {serialize} from 'v8';
-import {Properties} from '../models';
-import {PropertiesRepository} from '../repositories';
-import {PropertyCalcultionsService} from '../services';
+import {AllBills, AllPropertyMessage, Properties, PropertyMessage} from '../models';
+import {PeopleRepository, PropertiesRepository} from '../repositories';
+import {NotificationService, PropertyCalcultionsService} from '../services';
+import {PeopleController} from './people.controller';
 
 export class PropertiesController {
   constructor(
     @repository(PropertiesRepository)
     public propertiesRepository: PropertiesRepository,
+    @repository(PeopleRepository)
+    public peopleRepository: PeopleRepository,
     @service(PropertyCalcultionsService)
     public propertyService: PropertyCalcultionsService,
+    @service(NotificationService)
+    public notificationService: NotificationService
 
   ) { }
 
@@ -44,13 +49,65 @@ export class PropertiesController {
     })
     properties:  Omit<Properties, 'id'>,
   ): Promise<Properties> {
-
     // const {area, apartmentTowersId} = properties;
     const coefficient=await this.propertyService.GenerateCoefficient(properties.apartmentTowersId,properties.area)
     properties.coefficient =coefficient;
     properties.administrationCost=await this.propertyService.GenerateAdministrationCost(coefficient,properties.apartmentTowersId);
 
     return this.propertiesRepository.create(properties);
+  }
+  @post('/propertyMessage')
+  @response(200, {
+    description: 'PropertiesMessage model instance',
+    content: {'application/json': {schema: getModelSchemaRef(PropertyMessage)}},
+  })
+  async createMessage(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(PropertyMessage, {
+            title: 'NewPropertyMessage',
+
+          }),
+        },
+      },
+    })
+    propertyMessage: PropertyMessage,
+  ): Promise<boolean> {
+    let property = await this.propertiesRepository.findById(propertyMessage.idProperty);
+    let person = await this.peopleRepository.findById(property.habitantId);
+    let message = `Hola ${person.firstName}, ${person.middleName} ${propertyMessage.message}`;
+    let destination = person.phoneNumber;
+    this.notificationService.sendSmsMessage(message, destination);
+    return true
+  }
+
+  @post('/AllpropertysMessage')
+  @response(200, {
+    description: 'AllPropertiesMessage model instance',
+    content: {'application/json': {schema: getModelSchemaRef(AllPropertyMessage)}},
+  })
+  async createAllMessage(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(AllPropertyMessage, {
+            title: 'NewAllPropertyMessage',
+
+          }),
+        },
+      },
+    })
+    allPropertyMessage: AllPropertyMessage,
+  ): Promise<boolean> {
+    const propertyes= await this.propertiesRepository.find()
+    propertyes.forEach( async (value) => {
+      let person = await this.peopleRepository.findById(value.habitantId);
+      let message = `Hola ${person.firstName}, ${person.middleName} ${allPropertyMessage.Message}`;
+      let destination = person.phoneNumber;
+      this.notificationService.sendSmsMessage(message, destination);
+    });
+    return true
   }
 
   @get('/properties/count')
