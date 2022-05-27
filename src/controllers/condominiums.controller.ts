@@ -27,6 +27,7 @@ export class CondominiumsController {
     public condominiumsRepository : CondominiumsRepository,
   ) {}
 
+   @authenticate('admin')
   @post('/condominiums')
   @response(200, {
     description: 'Condominiums model instance',
