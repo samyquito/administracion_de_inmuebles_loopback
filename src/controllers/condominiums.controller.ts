@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -26,6 +27,7 @@ export class CondominiumsController {
     public condominiumsRepository : CondominiumsRepository,
   ) {}
 
+   @authenticate('admin')
   @post('/condominiums')
   @response(200, {
     description: 'Condominiums model instance',
@@ -58,6 +60,7 @@ export class CondominiumsController {
     return this.condominiumsRepository.count(where);
   }
 
+  @authenticate('admin')
   @get('/condominiums')
   @response(200, {
     description: 'Array of Condominiums model instances',

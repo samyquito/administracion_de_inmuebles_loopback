@@ -25,31 +25,37 @@ export class AdminStrategy implements AuthenticationStrategy {
       let rol_admin = GeneralData.administratorRole;
       let url_token = GeneralData.url_validator_token;
       let r = "";
-      let b = `{
-      "token": ${token},
-      "roleId": ${rol_admin},
-    }`;
+      let body = {
+        token:token,
+        roleId: rol_admin
+      };
       await fetch(url_token,
         {
           method: 'POST',
-          body: b,
+          body: JSON.stringify(body),
+          headers:{'Content-Type':'application/json'},
         }
       ).then(async (res: any) => {
         r = await res.text()
         console.log(r)
       })
       console.log("R: " + r)
-      if (r) {
-        let perfil: UserProfile = Object.assign({
-          admin: "OK"
-        });
-        return perfil;
-      } else {
-        throw new HttpErrors[401]("El rol del token no es válido");
+      switch (r) {
+        case "OK":
+          let perfil: UserProfile = Object.assign({
+            admin: "OK"
+          });
+          return perfil;
+          break;
+        case "KO":
+          throw new HttpErrors[401]("El rol del token no es válido");
+          break;
+        case "EX":
+          throw new HttpErrors[401]("El token no es válido");
+          break;
       }
     } else {
       throw new HttpErrors[401]("La request no tiene un token");
     }
-    return undefined
   }
 }
