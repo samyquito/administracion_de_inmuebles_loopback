@@ -21,13 +21,13 @@ import {
 import {Condominiums} from '../models';
 import {CondominiumsRepository} from '../repositories';
 
+@authenticate('admin')
 export class CondominiumsController {
   constructor(
     @repository(CondominiumsRepository)
     public condominiumsRepository : CondominiumsRepository,
   ) {}
 
-   @authenticate('admin')
   @post('/condominiums')
   @response(200, {
     description: 'Condominiums model instance',
@@ -48,7 +48,6 @@ export class CondominiumsController {
   ): Promise<Condominiums> {
     return this.condominiumsRepository.create(condominiums);
   }
-
   @get('/condominiums/count')
   @response(200, {
     description: 'Condominiums model count',

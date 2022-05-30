@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {service} from '@loopback/core';
 import {
   Count,
@@ -16,6 +17,7 @@ import {AllBills, Bills} from '../models';
 import {BillsRepository, PeopleRepository, PropertiesRepository} from '../repositories';
 import {InvoicesValuesService, NotificationService} from '../services';
 
+@authenticate('admin')
 export class BillsController {
   constructor(
     @repository(BillsRepository)

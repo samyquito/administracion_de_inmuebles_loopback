@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -20,6 +21,7 @@ import {
 import {SocialArea} from '../models';
 import {SocialAreaRepository} from '../repositories';
 
+@authenticate('admin')
 export class SocialAreaController {
   constructor(
     @repository(SocialAreaRepository)

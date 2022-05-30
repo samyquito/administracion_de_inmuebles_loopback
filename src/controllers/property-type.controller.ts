@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -20,6 +21,7 @@ import {
 import {PropertyType} from '../models';
 import {PropertyTypeRepository} from '../repositories';
 
+@authenticate('admin')
 export class PropertyTypeController {
   constructor(
     @repository(PropertyTypeRepository)

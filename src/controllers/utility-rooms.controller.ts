@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {service} from '@loopback/core';
 import {
   Count,
@@ -22,6 +23,7 @@ import {UtilityRooms} from '../models';
 import {UtilityRoomsRepository} from '../repositories';
 import {PropertyCalcultionsService} from '../services';
 
+@authenticate('admin')
 export class UtilityRoomsController {
   constructor(
     @repository(UtilityRoomsRepository)

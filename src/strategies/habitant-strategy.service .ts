@@ -15,14 +15,14 @@ const fetch = require('node-fetch');
  */
 
 @injectable({scope: BindingScope.TRANSIENT})
-export class AdminStrategy implements AuthenticationStrategy {
-  name: string = 'admin';
+export class HabitantStrategy implements AuthenticationStrategy {
+  name: string = 'habitant';
   constructor(/* Add @inject to inject parameters */) { }
 
   async authenticate(request: Request): Promise<UserProfile | undefined> {
     let token = parseBearerToken(request);
     if (token) {
-      let rol_admin = GeneralData.administratorRole;
+      let rol_admin = GeneralData.habitantRole;
       let url_token = GeneralData.url_validator_token;
       let r = "";
       let body = {

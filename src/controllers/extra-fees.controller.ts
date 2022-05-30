@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -20,6 +21,7 @@ import {
 import {ExtraFees} from '../models';
 import {ExtraFeesRepository} from '../repositories';
 
+@authenticate('admin')
 export class ExtraFeesController {
   constructor(
     @repository(ExtraFeesRepository)
@@ -37,7 +39,7 @@ export class ExtraFeesController {
         'application/json': {
           schema: getModelSchemaRef(ExtraFees, {
             title: 'NewExtraFees',
-            
+
           }),
         },
       },

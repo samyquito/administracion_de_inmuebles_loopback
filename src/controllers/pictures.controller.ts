@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -20,6 +21,7 @@ import {
 import {Pictures} from '../models';
 import {PicturesRepository} from '../repositories';
 
+@authenticate('admin')
 export class PicturesController {
   constructor(
     @repository(PicturesRepository)

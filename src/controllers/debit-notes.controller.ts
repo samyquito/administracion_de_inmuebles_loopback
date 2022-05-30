@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -20,6 +21,7 @@ import {
 import {DebitNotes} from '../models';
 import {DebitNotesRepository} from '../repositories';
 
+@authenticate('admin')
 export class DebitNotesController {
   constructor(
     @repository(DebitNotesRepository)

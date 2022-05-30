@@ -11,6 +11,8 @@ import path from 'path';
 import {MySequence} from './sequence';
 import {AuthenticationComponent, registerAuthenticationStrategy} from '@loopback/authentication';
 import {AdminStrategy} from './strategies/admin-strategy.service';
+import {CounterStrategy} from './strategies/counter-strategy.service';
+import {HabitantStrategy} from './strategies/habitant-strategy.service ';
 
 export {ApplicationConfig};
 
@@ -43,6 +45,9 @@ export class AdministracionDeInmueblesApplication extends BootMixin(
       },
     };
     registerAuthenticationStrategy(this, AdminStrategy);
+    registerAuthenticationStrategy(this, CounterStrategy);
+    registerAuthenticationStrategy(this, HabitantStrategy);
+
     this.component(AuthenticationComponent);
   }
 }

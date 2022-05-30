@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -20,6 +21,7 @@ import {
 import {Penalties} from '../models';
 import {PenaltiesRepository} from '../repositories';
 
+@authenticate('admin')
 export class PenaltiesController {
   constructor(
     @repository(PenaltiesRepository)

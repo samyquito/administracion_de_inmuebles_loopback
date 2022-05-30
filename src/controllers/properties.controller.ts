@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {service} from '@loopback/core';
 import {
   Count,
@@ -18,6 +19,7 @@ import {PeopleRepository, PropertiesRepository} from '../repositories';
 import {NotificationService, PropertyCalcultionsService} from '../services';
 import {PeopleController} from './people.controller';
 
+@authenticate('admin')
 export class PropertiesController {
   constructor(
     @repository(PropertiesRepository)

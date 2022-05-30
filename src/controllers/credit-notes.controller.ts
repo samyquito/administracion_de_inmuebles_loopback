@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -20,6 +21,7 @@ import {
 import {CreditNotes} from '../models';
 import {CreditNotesRepository} from '../repositories';
 
+@authenticate('admin')
 export class CreditNotesController {
   constructor(
     @repository(CreditNotesRepository)
