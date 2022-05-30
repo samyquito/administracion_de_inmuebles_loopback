@@ -96,7 +96,7 @@ export class PenaltiesController {
   ): Promise<Count> {
     return this.penaltiesRepository.updateAll(penalties, where);
   }
-
+  @authenticate('habitant')
   @get('/penalties/{id}')
   @response(200, {
     description: 'Penalties model instance',

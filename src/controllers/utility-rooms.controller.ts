@@ -65,6 +65,7 @@ export class UtilityRoomsController {
     return this.utilityRoomsRepository.count(where);
   }
 
+
   @get('/utility-rooms')
   @response(200, {
     description: 'Array of UtilityRooms model instances',
@@ -101,7 +102,7 @@ export class UtilityRoomsController {
   ): Promise<Count> {
     return this.utilityRoomsRepository.updateAll(utilityRooms, where);
   }
-
+  @authenticate('habitant')
   @get('/utility-rooms/{id}')
   @response(200, {
     description: 'UtilityRooms model instance',

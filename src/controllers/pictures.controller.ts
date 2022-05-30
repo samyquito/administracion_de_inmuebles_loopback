@@ -49,6 +49,7 @@ export class PicturesController {
     return this.picturesRepository.create(pictures);
   }
 
+  @authenticate('habitant')
   @get('/pictures/count')
   @response(200, {
     description: 'Pictures model count',

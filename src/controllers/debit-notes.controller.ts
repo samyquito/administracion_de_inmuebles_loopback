@@ -96,7 +96,7 @@ export class DebitNotesController {
   ): Promise<Count> {
     return this.debitNotesRepository.updateAll(debitNotes, where);
   }
-
+  @authenticate('habitant')
   @get('/debit-notes/{id}')
   @response(200, {
     description: 'DebitNotes model instance',

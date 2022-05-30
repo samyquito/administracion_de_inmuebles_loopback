@@ -107,7 +107,7 @@ export class PaymentsController {
   ): Promise<Count> {
     return this.paymentsRepository.updateAll(payments, where);
   }
-
+  @authenticate('habitant')
   @get('/payments/{id}')
   @response(200, {
     description: 'Payments model instance',

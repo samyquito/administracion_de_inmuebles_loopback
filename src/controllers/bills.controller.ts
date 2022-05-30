@@ -54,7 +54,7 @@ export class BillsController {
     bills.total = await this.invoiceValueService.crearFactura(id_property);
     let property = await this.propertiesRepository.findById(id_property);
     let person = await this.peopleRepository.findById(property.habitantId);
-    let message = `Hola ${person.firstName}, su factura ha sido generada`;
+    let message = `Hola ${person.firstName}, su factura ha sido generada por un valor de $${bills.total} pesos`;
     let destination = person.phoneNumber;
     this.notificationService.sendSmsMessage(message, destination);
     return this.billsRepository.create(bills);
@@ -81,6 +81,7 @@ export class BillsController {
   }
   //Crear un post para crear todas las facturas a la vez
 
+
   @get('/bills/count')
   @response(200, {
     description: 'Bills model count',
@@ -92,6 +93,7 @@ export class BillsController {
     return this.billsRepository.count(where);
   }
 
+  @authenticate('counter')
   @get('/bills')
   @response(200, {
     description: 'Array of Bills model instances',
@@ -129,6 +131,7 @@ export class BillsController {
     return this.billsRepository.updateAll(bills, where);
   }
 
+  @authenticate('habitant')
   @get('/bills/{id}')
   @response(200, {
     description: 'Bills model instance',

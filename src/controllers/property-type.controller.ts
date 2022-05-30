@@ -60,6 +60,7 @@ export class PropertyTypeController {
     return this.propertyTypeRepository.count(where);
   }
 
+  @authenticate.skip()
   @get('/property-types')
   @response(200, {
     description: 'Array of PropertyType model instances',

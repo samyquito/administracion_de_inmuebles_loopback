@@ -59,7 +59,6 @@ export class ExtraFeesController {
   ): Promise<Count> {
     return this.extraFeesRepository.count(where);
   }
-
   @get('/extra-fees')
   @response(200, {
     description: 'Array of ExtraFees model instances',
@@ -96,7 +95,7 @@ export class ExtraFeesController {
   ): Promise<Count> {
     return this.extraFeesRepository.updateAll(extraFees, where);
   }
-
+  @authenticate('habitant')
   @get('/extra-fees/{id}')
   @response(200, {
     description: 'ExtraFees model instance',

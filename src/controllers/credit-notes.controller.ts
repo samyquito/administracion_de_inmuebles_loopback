@@ -96,7 +96,7 @@ export class CreditNotesController {
   ): Promise<Count> {
     return this.creditNotesRepository.updateAll(creditNotes, where);
   }
-
+  @authenticate('habitant')
   @get('/credit-notes/{id}')
   @response(200, {
     description: 'CreditNotes model instance',

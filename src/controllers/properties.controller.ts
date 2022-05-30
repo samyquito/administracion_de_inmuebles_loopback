@@ -159,7 +159,7 @@ export class PropertiesController {
   ): Promise<Count> {
     return this.propertiesRepository.updateAll(properties, where);
   }
-
+  @authenticate('habitant')
   @get('/properties/{id}')
   @response(200, {
     description: 'Properties model instance',

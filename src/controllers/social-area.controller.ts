@@ -59,7 +59,7 @@ export class SocialAreaController {
   ): Promise<Count> {
     return this.socialAreaRepository.count(where);
   }
-
+  @authenticate.skip()
   @get('/social-areas')
   @response(200, {
     description: 'Array of SocialArea model instances',

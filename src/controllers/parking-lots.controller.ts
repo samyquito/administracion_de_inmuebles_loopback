@@ -64,7 +64,6 @@ export class ParkingLotsController {
   ): Promise<Count> {
     return this.parkingLotsRepository.count(where);
   }
-
   @get('/parking-lots')
   @response(200, {
     description: 'Array of ParkingLots model instances',
@@ -102,6 +101,7 @@ export class ParkingLotsController {
     return this.parkingLotsRepository.updateAll(parkingLots, where);
   }
 
+  @authenticate('habitant')
   @get('/parking-lots/{id}')
   @response(200, {
     description: 'ParkingLots model instance',
