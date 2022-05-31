@@ -96,7 +96,7 @@ export class PeopleController {
   ): Promise<Count> {
     return this.peopleRepository.updateAll(people, where);
   }
-  @authenticate('habitant')
+  @authenticate('habitant','admin')
   @get('/people/{id}')
   @response(200, {
     description: 'People model instance',

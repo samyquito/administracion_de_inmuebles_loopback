@@ -80,8 +80,6 @@ export class BillsController {
     return true
   }
   //Crear un post para crear todas las facturas a la vez
-
-
   @get('/bills/count')
   @response(200, {
     description: 'Bills model count',
@@ -92,8 +90,7 @@ export class BillsController {
   ): Promise<Count> {
     return this.billsRepository.count(where);
   }
-
-  @authenticate('counter')
+ @authenticate('admin','habitant')
   @get('/bills')
   @response(200, {
     description: 'Array of Bills model instances',
