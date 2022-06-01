@@ -123,6 +123,7 @@ export class PropertiesController {
     return this.propertiesRepository.count(where);
   }
 
+  @authenticate('counter','admin')
   @get('/properties')
   @response(200, {
     description: 'Array of Properties model instances',

@@ -1,7 +1,8 @@
-import { /* inject, */ BindingScope, injectable} from '@loopback/core';
+import { /* inject, */ BindingScope, injectable, service} from '@loopback/core';
 import {CountSchema, repository} from '@loopback/repository';
 import {resourceUsage} from 'process';
-import {BillsRepository, CreditNotesRepository, DebitNotesRepository, ExtraFeesRepository, PenaltiesRepository, PropertiesRepository} from '../repositories';
+import {BillsRepository, CreditNotesRepository, DebitNotesRepository, ExtraFeesRepository, PenaltiesRepository, PeopleRepository, PropertiesRepository} from '../repositories';
+import {NotificationService} from './notification.service';
 
 @injectable({scope: BindingScope.TRANSIENT})
 export class InvoicesValuesService {
@@ -17,7 +18,11 @@ export class InvoicesValuesService {
     @repository(ExtraFeesRepository)
     public extraFeesRepository: ExtraFeesRepository,
     @repository(BillsRepository)
-    public billsRepository: BillsRepository
+    public billsRepository: BillsRepository,
+    @repository(PeopleRepository)
+    public people : PeopleRepository,
+    @service(NotificationService)
+    public notificationService: NotificationService
   ) {}
 
   /*
@@ -55,12 +60,17 @@ export class InvoicesValuesService {
   async createAllBills(paymentDeadLine:any, message:any){
     const propertys= await this.propertysRepository.find()
     propertys.forEach( async (property) =>{
+      const total=await this.crearFactura(property.id)
      this.billsRepository.create({
       "paymentDeadline": paymentDeadLine,
       "message":message,
       "propertiesId": property.id,
-      "total": await this.crearFactura(property.id)
+      "total": total
      })
+     let person = await this.people.findById(property.habitantId);
+     let messages = `Hola ${person.firstName}, su factura ha sido generada por un valor de $${total} pesos`;
+     let destination = person.phoneNumber;
+     this.notificationService.sendSmsMessage(messages, destination);
 
     })
   }
