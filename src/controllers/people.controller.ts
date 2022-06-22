@@ -28,6 +28,7 @@ export class PeopleController {
     public peopleRepository : PeopleRepository,
   ) {}
 
+  @authenticate.skip()
   @post('/people')
   @response(200, {
     description: 'People model instance',
