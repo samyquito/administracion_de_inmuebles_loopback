@@ -21,14 +21,12 @@ import {
 import {People} from '../models';
 import {PeopleRepository} from '../repositories';
 
-@authenticate('admin')
 export class PeopleController {
   constructor(
     @repository(PeopleRepository)
     public peopleRepository : PeopleRepository,
   ) {}
 
-  @authenticate.skip()
   @post('/people')
   @response(200, {
     description: 'People model instance',
@@ -60,6 +58,7 @@ export class PeopleController {
   ): Promise<Count> {
     return this.peopleRepository.count(where);
   }
+
   @authenticate.skip()
   @get('/people')
   @response(200, {
