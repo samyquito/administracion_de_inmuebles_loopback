@@ -59,7 +59,7 @@ export class PeopleController {
   ): Promise<Count> {
     return this.peopleRepository.count(where);
   }
-
+  @authenticate.skip()
   @get('/people')
   @response(200, {
     description: 'Array of People model instances',

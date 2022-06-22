@@ -49,6 +49,7 @@ export class ApartmentTowersController {
     return this.apartmentTowersRepository.create(apartmentTowers);
   }
 
+   @authenticate.skip()
   @get('/apartment-towers/count')
   @response(200, {
     description: 'ApartmentTowers model count',
@@ -59,7 +60,7 @@ export class ApartmentTowersController {
   ): Promise<Count> {
     return this.apartmentTowersRepository.count(where);
   }
-
+  @authenticate.skip()
   @get('/apartment-towers')
   @response(200, {
     description: 'Array of ApartmentTowers model instances',
